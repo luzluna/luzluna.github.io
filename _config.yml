@@ -1,0 +1,12 @@
+# Site settings
+title: Park Dongsik's dev and etc ...
+email: luzluna@gmail.com
+description: > # this means to ignore newlines until "baseurl:"
+   someting boring dev and etc ...
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://luzluna.github.io" # the base hostname & protocol for your site
+twitter_username: luzluna
+github_username:  luzluna
+
+# Build settings
+markdown: kramdown
