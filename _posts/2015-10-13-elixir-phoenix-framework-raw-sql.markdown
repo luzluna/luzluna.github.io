@@ -81,7 +81,7 @@ config/dev.exs
 ~~~
 
 
-=끝
+# 끝
 
 테스트해보려면..
 web/controllers/page_controller.ex

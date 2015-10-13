@@ -1,4 +1,6 @@
 test:
 	jekyll serve -H 0
-deploy:
+build:
+	jekyll build
+deploy: build
 	git push
