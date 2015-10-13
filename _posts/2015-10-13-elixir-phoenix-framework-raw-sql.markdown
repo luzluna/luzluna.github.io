@@ -48,12 +48,12 @@ lib/myprj.ex
      children = [
        # Start the endpoint when the application starts
 
-       supervisor(Kara.Endpoint, []),
+       supervisor(Myprj.Endpoint, []),
        # Here you could define other workers and supervisors as children
-       # worker(Kara.Worker, [arg1, arg2, arg3]),
+       # worker(Myprj.Worker, [arg1, arg2, arg3]),
 +
 +      # Start the Ecto repository
-+      worker(Kara.Repo, []),
++      worker(Myprj.Repo, []),
      ]
 
 .
@@ -71,10 +71,10 @@ config/dev.exs
 
 ~~~
 +
-+config :kara, Kara.Repo,
++config :myprj, Myprj.Repo,
 +  adapter: Ecto.Adapters.Postgres,
-+  database: "kara",
-+  username: "kara",
++  database: "myprj",
++  username: "myprj",
 +  password: "",
 +  hostname: "localhost"
 
@@ -88,7 +88,7 @@ web/controllers/page_controller.ex
 
 ~~~
    def index(conn, _params) do
-+    Ecto.Adapters.SQL.query(Kara.Repo, "SELECT 1",[])
++    Ecto.Adapters.SQL.query(Myprj.Repo, "SELECT 1",[])
      render conn, "index.html"
    end
 ~~~
