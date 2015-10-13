@@ -1,6 +1,6 @@
 # Site settings
 title: Park Dongsik's dev and etc ...
-email: luzluna@gmail.com
+email: luzluna at gmail
 description: > # this means to ignore newlines until "baseurl:"
    someting boring dev and etc ...
 baseurl: "" # the subpath of your site, e.g. /blog/

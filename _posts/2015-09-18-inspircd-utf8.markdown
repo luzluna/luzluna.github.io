@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "inspircd utf8"
-date: 2015-10-13 15:05:03 +0900
+date: 2015-09-18 15:05:03 +0900
 comments: true
 categories: 
 ---
