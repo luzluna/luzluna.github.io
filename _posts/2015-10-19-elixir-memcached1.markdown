@@ -13,9 +13,9 @@ memcached 캐시를 사용하고 싶은데 방법을 잘 모르겠어서 찾아�
 
 # 참고문헌
 
-* https://github.com/EchoTeam/mcd
-* https://gist.github.com/ymmtmsys/5b3340cb22aebf8436d8
-( http://ymmtmsys.hatenablog.com/entry/2015/09/02/214254 )
+* [https://github.com/EchoTeam/mcd](https://github.com/EchoTeam/mcd)
+* [https://gist.github.com/ymmtmsys/5b3340cb22aebf8436d8](https://gist.github.com/ymmtmsys/5b3340cb22aebf8436d8)
+( [http://ymmtmsys.hatenablog.com/entry/2015/09/02/214254](http://ymmtmsys.hatenablog.com/entry/2015/09/02/214254) )
 
 # phoenix framework 준비
 
@@ -36,10 +36,10 @@ http://localhost:4000
 # poolboy와 mcd 모듈 추가
 
 * poolboy는 erlang의 worker pool factory 모듈입니다.
-  https://github.com/devinus/poolboy
+  [https://github.com/devinus/poolboy](https://github.com/devinus/poolboy)
 
 * mcd는 erlang의 memcached client library 입니다. EctoTeam에서 만들었네요..
-  https://github.com/EchoTeam/mcd
+  [https://github.com/EchoTeam/mcd](https://github.com/EchoTeam/mcd)
 
 mix.exs
 {% highlight elixir %}
@@ -181,12 +181,30 @@ web/router.ex
    end
 {% endhighlight %}
 
-다음의 URL을 방문하여 확인
+# 다음의 URL을 방문하여 확인
 
 * http://localhost/4000/set
+{% highlight xml %}
+{
+    "result": "ok",
+    "request": "set"
+}
+{% endhighlight %}
 
 * http://localhost/4000/get
+{% highlight xml %}
+{
+    "result": "Hello Phoenix",
+    "request": "get"
+}
+{% endhighlight %}
 
 * http://localhost/4000/delete
+{% highlight xml %}
+{
+    "result": "deleted",
+    "request": "delete"
+}
+{% endhighlight %}
 
 
