@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Elixir Phoenix Framework Memcached by poolboy"
+title: "Elixir Phoenix Framework Memcached Cluster"
 date: 2015-10-26T15:35:48+09:00
 ---
 
