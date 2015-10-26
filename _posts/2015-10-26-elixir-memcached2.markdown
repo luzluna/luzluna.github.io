@@ -1,23 +1,46 @@
 ---
 layout: post
 title: "Elixir Phoenix Framework Memcached by poolboy"
-date: 2015-10-19T13:57:48+09:00
+date: 2015-10-26T15:35:48+09:00
 ---
 
-# 동기
+# memcached cluster
 
-Raw SQL을 사용할 수 있게됨에 따라 mysql,posgresql은 잘 사용할 수 있게되었는데
-memcached 캐시를 사용하고 싶은데 방법을 잘 모르겠어서 찾아보았습니다.
+지난번 포스팅에서 :mcd 모듈을 이용해서 memcached를 사용하는법을 알아냈습니다만, 여러대의 memcached cluster가 있을 경우에는 :mcd_cluster를 사용해야 합니다.
 
-다행히 Yokohama에 사는 ymmtmsys(山本)이라는분께서 잘 정리해둔것이 있어서 쉽게 따라해볼 수 있습니다.
+[https://github.com/EchoTeam/mcd](https://github.com/EchoTeam/mcd)
+의 설명을 보면 erlang에서는 cluster 모드는 다음과 같이 사용할 수 있다고 나옵니다.
 
-# 참고문헌
+{% highlight erlang %}
+{mainCluster,
+    {mcd_cluster, start_link, [mainCluster, [
+        {host1, ["localhost"], 10},
+        {host2, ["localhost"], 20}
+    ]]},
+    permanent, 60000, worker, [mcd_cluster]}
+{% endhighlight %}
 
-* [https://github.com/EchoTeam/mcd](https://github.com/EchoTeam/mcd)
-* [https://gist.github.com/ymmtmsys/5b3340cb22aebf8436d8](https://gist.github.com/ymmtmsys/5b3340cb22aebf8436d8)
-( [http://ymmtmsys.hatenablog.com/entry/2015/09/02/214254](http://ymmtmsys.hatenablog.com/entry/2015/09/02/214254) )
+erlang 문법이 익숙칠 않아서 elixir에는 어떻게 해야할지 몰라서 고생했네요. ^^
+간단 요약하면 다음과 같이 하면 됩니다.
+
+{% highlight elixir %}
+:poolboy.child_spec(:memcached_pool,
+	[ # pool_option
+		name: {:local, :memcached_pool},
+		worker_module: :mcd_cluster,
+		size: 5,
+		max_overflow: 0,
+	],
+	[ # argument
+		{:node1, ['localhost', 11211], 10},
+		{:node2, ['localhost', 11212], 10},
+	])
+{% endhighlight %}
+
 
 # phoenix framework 준비
+
+일단 차근차근 이전에 했던것과 같이 프로젝트를 만들어줍니다.
 
 프로젝트 생성
 {% highlight bash %}
@@ -35,10 +58,8 @@ http://localhost:4000
 
 # poolboy와 mcd 모듈 추가
 
-* poolboy는 erlang의 worker pool factory 모듈입니다.
   [https://github.com/devinus/poolboy](https://github.com/devinus/poolboy)
 
-* mcd는 erlang의 memcached client library 입니다. EctoTeam에서 만들었네요..
   [https://github.com/EchoTeam/mcd](https://github.com/EchoTeam/mcd)
 
 mix.exs
@@ -74,7 +95,11 @@ mix deps.get
 {% endhighlight %}
 
 
-# memcached Supervisor module add
+# memcached cluster Supervisor module add
+
+**<font color="red">이 부분부터가 이전과 달라집니다.</font>**
+
+**<font color="red">:mcd 대신 :mcd_cluster 를 사용하고 argument의 형식이 달라집니다.</font>**
 
 lib/myprj.ex 의 끝부분에 추가. (다른 파일로 만들어도 됩니다)
 
@@ -93,12 +118,17 @@ defmodule Memcached.Supervisor do
   def init([]) do
     pool_options = [
       name: {:local, :memcached_pool},
-      worker_module: :mcd,
+      # worker_module: :mcd,	## 이부분이 변경되었습니다.
+      worker_module: :mcd_cluster,
       size: 5,
       max_overflow: 0,
     ]
 
-    arg = ['localhost', 11211]
+    # arg = ['localhost', 11211]  ## 그리고 여기 argument가 달라졌습니다.
+    arg = [
+        {:node1, ['localhost', 11211], 10},
+        {:node1, ['localhost', 11212], 10},
+    }
 
     children = [
         :poolboy.child_spec(:memcached_pool, pool_options, arg)
@@ -111,6 +141,8 @@ end
 
 
 # memcached Supervisor start
+
+그리고 나머지는 이전과 같습니다..
 
 lib/myprj.ex 수정
 
@@ -207,4 +239,8 @@ web/router.ex
 }
 {% endhighlight %}
 
+
+# 결론
+
+Memcached.Supervisor 설정하는 방법만 다르고 나머진 그대로 이용할 수 있어 좋네요...
 
