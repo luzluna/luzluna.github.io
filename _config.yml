@@ -10,3 +10,4 @@ github_username:  luzluna
 
 # Build settings
 markdown: kramdown
+fbcomments: yes
