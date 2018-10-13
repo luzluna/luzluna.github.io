@@ -1,6 +1,6 @@
 test:
-	jekyll serve -H 0
+	bundle exec /usr/local/bin/jekyll serve -H 0
 build:
-	jekyll build
+	bundle exec /usr/local/bin/jekyll build
 deploy: build
 	git push

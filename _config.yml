@@ -11,3 +11,11 @@ github_username:  luzluna
 # Build settings
 markdown: kramdown
 fbcomments: yes
+
+
+# Collections
+collections:
+    wiki:
+        output: true
+        permalink: /:collection/:path/
+
